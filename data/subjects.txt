@@ -1,0 +1,7 @@
+# Subjects file
+# Format: Code|Name|CreditHours|HasLab
+BS-221|Object Oriented Programming|4|true
+BS-222|Operating Systems|3|false
+BS-223|Data Communication and Computer Networks|4|false
+BS-224|Applied Mathematics II|3|false
+BS-225|Embedded Systems|3|true
