@@ -37,8 +37,10 @@ All this data will be in files.
 ## Plan (Todo)
 
 - [X] Finalize what files to make
-- [ ] Make the files
-- [ ] Finalize the files structure
+- [X] Make the files
+- [X] Finalize the files structure
+
+- [ ] Read 1/2 lines from a file and print a meaningful output, i.e., `student: Arslan`, by reading from a file.
 
 ## Data Context
 
