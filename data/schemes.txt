@@ -1,14 +1,7 @@
-# row format: id|type|count|weight|max_per_item_or_max|drop_lowest
+# row format: item-name,count,weight,max-items
 
-[scheme:WITH_LAB]
-quizzes|group|4|10|10|1
-assignments|group|4|10|10|0
-midterm|single|-|30|100|-
-final|single|-|40|100|-
-lab|group|8|10|10|0
-
-[scheme:NO_LAB]
-quizzes|group|4|10|10|0
-assignments|group|4|10|10|0
-midterm|single|-|30|100|-
-final|single|-|50|100|-
+quizzes,4,10,10
+assignments,4,10,10
+midterm,1,30,100
+final,1,50,100
+lab,8,10,10

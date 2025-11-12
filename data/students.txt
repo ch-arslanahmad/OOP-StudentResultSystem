@@ -1,21 +1,22 @@
-# Format: SAP|Name|Semester
-70177001|Ali Raza|2
-70177002|Ayesha Khan|2
-70177003|Bilal Ahmed|2
-70177004|Fatima Noor|2
-70177005|Hassan Riaz|2
-70177006|Zara Malik|2
-70177007|Hamza Ali|2
-70177008|Hira Saeed|2
-70177009|Usman Tariq|2
-70177010|Mahnoor Fatima|2
-70177011|Ahmed Shehzad|2
-70177012|Mariam Iqbal|2
-70177013|Saad Farooq|2
-70177014|Sana Javed|2
-70177015|Zain Ul Abidin|2
-70177016|Laiba Khalid|2
-70177017|Fahad Mustafa|2
-70177018|Rabia Nadeem|2
-70177019|Huzaifa Khan|2
-70177020|Aimen Zafar|2
+# Format:
+SAP,Name,Course, Semester
+70177001,Ali Raza,BSIET,2
+70177002,Ayesha Khan,BSIET,2
+70177003,Bilal Ahmed,BSIET,2
+70177004,Fatima Noor,BSIET,2
+70177005,Hassan Riaz,BSIET,2
+70177006,Zara Malik,BSIET,2
+70177007,Hamza Ali,BSIET,2
+70177008,Hira Saeed,BSIET,2
+70177009,Usman Tariq,BSIET,2
+70177010,Mahnoor Fatima,BSIET,2
+70177011,Ahmed Shehzad,BSIET,2
+70177012,Mariam Iqbal,BSIET,2
+70177013,Saad Farooq,BSIET,2
+70177014,Sana Javed,BSIET,2
+70177015,Zain Ul Abidin,BSIET,2
+70177016,Laiba Khalid,BSIET,2
+70177017,Fahad Mustafa,BSIET,2
+70177018,Rabia Nadeem,BSIET,2
+70177019,Huzaifa Khan,BSIET,2
+70177020,Aimen Zafar,BSIET,2

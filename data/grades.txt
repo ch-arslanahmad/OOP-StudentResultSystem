@@ -1,23 +1,23 @@
-.# Format: Semester|Section|SAP|SubjectCode|Component|ItemIndex|Obtained|Max
+.# Format: Semester,Section,SAP,SubjectCode,Component,ItemIndex,Obtained,Max
 
-2|A|70177001|BS-221|quizzes|1|8|10
-2|A|70177001|BS-221|quizzes|2|9|10
-2|A|70177001|BS-221|assignments|1|9|10
-2|A|70177001|BS-221|midterm|1|64|100
-2|A|70177001|BS-221|final|1|81|100
-2|A|70177001|BS-221|lab|1|9|10
+2,A,70177001,BS-221,quizzes,1,8,10
+2,A,70177001,BS-221,quizzes,2,9,10
+2,A,70177001,BS-221,assignments,1,9,10
+2,A,70177001,BS-221,midterm,1,64,100
+2,A,70177001,BS-221,final,1,81,100
+2,A,70177001,BS-221,lab,1,9,10
 
-2|A|70177002|BS-221|quizzes|1|7|10
-2|A|70177002|BS-221|assignments|1|8|10
-2|A|70177002|BS-221|midterm|1|58|100
-2|A|70177002|BS-221|final|1|75|100
-2|A|70177002|BS-221|lab|1|8|10
+2,A,70177002,BS-221,quizzes,1,7,10
+2,A,70177002,BS-221,assignments,1,8,10
+2,A,70177002,BS-221,midterm,1,58,100
+2,A,70177002,BS-221,final,1,75,100
+2,A,70177002,BS-221,lab,1,8,10
 
-2|A|70177002|BS-222|quizzes|1|10|10
-2|A|70177002|BS-222|midterm|1|72|100
-2|A|70177002|BS-222|final|1|88|100
+2,A,70177002,BS-222,quizzes,1,10,10
+2,A,70177002,BS-222,midterm,1,72,100
+2,A,70177002,BS-222,final,1,88,100
 
-2|A|70177003|BS-223|quizzes|1|6|10
-2|A|70177003|BS-223|assignments|1|8|10
-2|A|70177003|BS-223|midterm|1|60|100
-2|A|70177003|BS-223|final|1|79|100
+2,A,70177003,BS-223,quizzes,1,6,10
+2,A,70177003,BS-223,assignments,1,8,10
+2,A,70177003,BS-223,midterm,1,60,100
+2,A,70177003,BS-223,final,1,79,100
