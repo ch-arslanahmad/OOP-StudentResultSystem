@@ -1,7 +1,9 @@
-# Subjects file
-# Format: Course, Semester, Code,Name,CreditHours,HasLab
-BSIET,2,  BS-221,Object Oriented Programming,4,true
-BSIET,2,  BS-222,Operating Systems,3,false
-BSIET,2,  BS-223,Data Communication and Computer Networks,4,false
-BSIET,2,  BS-224,Applied Mathematics II,3,false
-BSIET,2,  BS-225,Embedded Systems,3,true
+# Format: Course, Semester, Code,Name,CreditHours, Lab
+BSIET,2,  BS-221,Object Oriented Programming,4, true
+BSIET,2,  BS-222,Operating Systems,3, false
+BSIET,2,  BS-223,Data Communication and Computer Networks,4, true
+BSIET,2,  BS-224,Applied Mathematics II,3, false
+BSIET,2,  BS-225,Embedded Systems,3, true
+
+
+// Removed redundant semester_subjects.txt file as its data is now part of subjects.txt

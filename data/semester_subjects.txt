@@ -1,6 +1,0 @@
-# Format: Semester,SubjectCode,Section,SchemeName
-2,BS-221,A,WITH_LAB
-2,BS-222,A,NO_LAB
-2,BS-223,A,NO_LAB
-2,BS-224,A,NO_LAB
-2,BS-225,A,WITH_LAB
