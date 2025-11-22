@@ -1,7 +1,12 @@
-# row format: item-name,count,weight,max-items
-
-quizzes,4,10,10
-assignments,4,10,10
-midterm,1,30,100
-final,1,50,100
-lab,8,10,10
+# Format: course, semester, name,quantity, weightage-perc.
+SCHEME,with_lab
+BSIET, 2, quiz,4,10
+BSIET, 2, assignment,4,10
+BSIET, 2, midterm,1,30
+BSIET, 2, final,1,50
+BSIET, 2, lab,16,10
+SCHEME,no_lab
+BSIET, 2, quiz,4,10
+BSIET, 2, assignment,4,10
+BSIET, 2, midterm,1,30
+BSIET, 2, final,1,50
