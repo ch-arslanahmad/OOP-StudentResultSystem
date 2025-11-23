@@ -1,16 +1,15 @@
 #include <string>
-using namespace std;
 class Student {
 private:
   int SAP;
-  string name;
-  string course;
+  std::string name, course;
 
   int semester;
 
 public:
   Student() {}
-  Student(int SAP, string name, string course, int semester) {
+  Student(int SAP, std::string name, std::string course, int semester)
+  {
     this->SAP = SAP;
     this->semester = semester;
     this->name = name;
@@ -22,13 +21,13 @@ public:
 
   // getters
   int getSap() { return SAP; }
-  string getName() { return name; }
+  std::string getName() { return name; }
   int getSemester() { return semester; }
-  string getCourse() { return course; }
+  std::string getCourse() { return course; }
 
   // setters
   void setSAP(int SAP) { this->SAP = SAP; }
-  void setName(string name) { this->name = name; }
+  void setName(std::string name) { this->name = name; }
   void setSemester(int semester) { this->semester = semester; }
-  void setCourse(string course) { this->course = course; }
+  void setCourse(std::string course) { this->course = course; }
 };
