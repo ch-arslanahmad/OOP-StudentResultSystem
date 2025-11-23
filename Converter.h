@@ -15,7 +15,7 @@ public:
   }
 
   // convert to float
-  int toFloat(std::string a) {
+  float toFloat(std::string a) {
     try {
       return std::stof(a);
     } catch (const std::invalid_argument &e) {
@@ -25,7 +25,7 @@ public:
   }
 
   // convert to double
-  int toDouble(std::string a) {
+  double toDouble(std::string a) {
     try {
       return std::stod(a);
     } catch (const std::invalid_argument &e) {
@@ -33,24 +33,7 @@ public:
       return -1.0; // error code
     }
   }
-  /* UNNEEDED METHODS FOR toBool()
-  // ... INCOMPLETE - helper method for toBool()
-  char *string_to_char(const std::string &a) {
-    int len = a.length();
-    std::char[len + 1] arr;
-    std::strcpy(arr, a.c_str()); // requires <cstring>
-    return arr;
-  }
 
-  // ... INCOMPLETE - helper method for toBool()
-  std::string char_to_string(const char *a) { return std::string(a); }
-
-  *\
-
-  // ! INCOMPLETE - main bool converter method
-  /*
-  ? Its kind of complete, only need to complete helper methods and test it
-  */
   bool toBool(std::string a) {
     try {
 
