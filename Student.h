@@ -3,13 +3,11 @@ class Student {
 private:
   int SAP;
   std::string name, course;
-
   int semester;
 
 public:
   Student() {}
-  Student(int SAP, std::string name, std::string course, int semester)
-  {
+  Student(int SAP, std::string name, std::string course, int semester) {
     this->SAP = SAP;
     this->semester = semester;
     this->name = name;

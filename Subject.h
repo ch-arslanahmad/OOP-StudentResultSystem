@@ -2,7 +2,6 @@
 class Subject {
 private:
   std::string course;
-
   int semester;
   std::string code, name;
   int credit_hours;

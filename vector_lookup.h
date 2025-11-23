@@ -1,3 +1,5 @@
+// its like a DAO (Data Access Object) for Student and Subject
+
 #include "Student.h"
 #include "Subject.h"
 #include <iostream>
@@ -48,4 +50,3 @@ Subject findSubject(std::vector<Subject> subjects, string code) {
     }
   }
 }
-
