@@ -1,11 +1,14 @@
 #include "Converter.h" // for conversion
+#include "GradePolicy.h"
 #include "Student.h"
 #include "Subject.h"
+#include "SubjectGrade.h"
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <string>
 #include <vector> // for list
+
 using namespace std;
 
 // a helper method to verify if file exists..
@@ -48,7 +51,7 @@ vector<Student> fetchStudentData(string filename) {
     students.push_back(
         Student(convert.toInt(sap), name, course, convert.toInt(semester)));
   }
-  
+
   return students;
 }
 
@@ -83,9 +86,84 @@ vector<Subject> fetchSubjectData(string filename) {
   return subjects;
 }
 
+vector<SubjectGrade> readSubjectGrades(string filename) {
+
+  if (fileExists(filename)) {
+    cout << "\nFile Found: " << filename << endl;
+  }
+
+  vector<SubjectGrade> subjectGrades; // list of subject grades
+  Converter convert;
+  // read subject grades file
+  ifstream rfSubjectGrades(filename);
+  string line;
+  cout << "\nReading Subject Grades File:\n";
+  int count = 0;
+  while (getline(rfSubjectGrades, line)) {
+    if (line[0] == '#' || line[0] == '/' || line.empty()) {
+      continue; // skip comment lines
+    }
+    string course, semester, sap, subjectCode, component, index, total,
+        obtained;
+    istringstream iss(line);
+    getline(iss, course, ',');
+    getline(iss, semester, ',');
+    getline(iss, sap, ',');
+    getline(iss, subjectCode, ',');
+    getline(iss, component, ',');
+    getline(iss, index, ',');
+    getline(iss, total, ',');
+    getline(iss, obtained, ',');
+
+    // ... Course,Semester,SAP,SubjectCode,Component,Index,Total,Obtained
+
+    subjectGrades.push_back(
+        SubjectGrade(course, convert.toInt(semester), convert.toInt(sap),
+                     subjectCode, component, convert.toInt(index),
+                     convert.toInt(total), convert.toInt(obtained)));
+    count++;
+  }
+  cout << "\nTotal Subject Grades Records Loaded: " << count << endl;
+  return subjectGrades;
+}
+
+
+
+vector<GradePolicy> getGradePolicy(string filename) {
+
+  ifstream rfGradePolicy(filename);
+  Converter convert;
+  string line;
+  cout << "\nReading Grade Policy File:\n";
+  vector<GradePolicy> gradePolicies;
+  while (getline(rfGradePolicy, line)) {
+    if (line[0] == '#' || line[0] == '/') {
+      continue; // skip comment lines
+    }
+    // process grade policy line
+    cout << line << endl;
+    string course, semester, name, quantity, weightage, hasLab;
+
+    istringstream iss(line);
+
+    getline(iss, course, ',');
+    getline(iss, semester, ',');
+    getline(iss, name, ',');
+    getline(iss, quantity, ',');
+    getline(iss, weightage, ',');
+    getline(iss, hasLab, ',');
+    // ... GradePolicy .  course, semester, name, quantity, weightage,
+    gradePolicies.push_back(GradePolicy(
+        course, convert.toInt(semester), name, convert.toInt(quantity),
+        convert.toDouble(weightage), convert.toBool(hasLab)));
+  }
+  return gradePolicies;
+}
 
 int main() {
 
+  // Test#1
+  /*
   vector<Student> students = fetchStudentData("data/students.txt");
   vector<Subject> subjects = fetchSubjectData("data/subjects.txt");
 
@@ -101,5 +179,7 @@ int main() {
     cout << "\nNo Subject Data Loaded.\n";
   }
 
+  */
 
+  readSubjectGrades("data/sub-grades.txt");
 }

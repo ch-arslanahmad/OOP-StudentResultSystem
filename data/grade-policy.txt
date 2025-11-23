@@ -1,12 +1,10 @@
-# Format: course, semester, name,quantity, weightage-perc.
-SCHEME,with_lab
-BSIET, 2, quiz,4,10
-BSIET, 2, assignment,4,10
-BSIET, 2, midterm,1,30
-BSIET, 2, final,1,50
-BSIET, 2, lab,16,10
-SCHEME,no_lab
-BSIET, 2, quiz,4,10
-BSIET, 2, assignment,4,10
-BSIET, 2, midterm,1,30
-BSIET, 2, final,1,50
+# Format: course, semester, name,quantity, weightage-perc, mode.
+BSIET,2,quiz,4,10,with_lab
+BSIET,2,assignment,4,10,with_lab
+BSIET,2,midterm,1,30,with_lab
+BSIET,2,final,1,50,with_lab
+BSIET,2,lab,16,10,with_lab
+BSIET,2,quiz,4,10,no_lab
+BSIET,2,assignment,4,10,no_lab
+BSIET,2,midterm,1,30,no_lab
+BSIET,2,final,1,50,no_lab
