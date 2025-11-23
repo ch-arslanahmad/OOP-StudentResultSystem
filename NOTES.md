@@ -14,14 +14,13 @@
 
 - [x] Read `students.txt`
 - [x] Read `subjects.txt`
-- [ ] Read `grade-policy.txt` (weightage of each component)
-- [ ] Read `grades.txt`
+- [x] Read `grade-policy.txt` (weightage of each component)
+- [x] Read `subgrades.txt`
 - [ ] Link students → subjects → grades using common identifiers
 - [ ] Verify merged data integrity (no missing subject or student references)
-- [ ] Remove redundant `semester_subjects.txt` if not needed
   - [ ] See if Requires further enhancement, linking of files and for them to make sense .
 
-- [ ] Read 1/2 lines from a file and print a meaningful output, i.e., `student: Arslan`, by reading from a file.
+- [x] Read 1/2 lines from a file and print a meaningful output, i.e., `student: Arslan`, by reading from a file.
 
 ## Data Context
 
@@ -79,6 +78,28 @@ We can get the following output:
 
 ## Logic
 
+### Files Responsibility
 `Converter.h` header file that handles conversion as when we read from a file, however the data maybe its in strings, we need it in different format like:
 
 `string` → `int`, `double`, `float` or even `bool`, for appropriate calculations, conditionals
+
+
+### Thought Process
+
+#### Using HashMap for Records
+Before i thought that using Hashmap is a plus but now i think its a necessity, because as we read from the grades file,
+
+if each subject has:
+- 4 assigments, 4 quizzess, 1 mid, 1 final..
+10 lines for each student,
+**10 student = 100 lines**
+
+Then for 5 subjects = 500 lines
+
+if lab subject has
+- 4 assignmets, 4 quizzes, 1 mid, 1 final, 16 labs
+26 for each student,
+**10 student = 260 lines...**
+Then for 5 subjects = 1300 lines
+
+i think vector manual linear search will get hectic and it is now a necessity to use a hashmap!
