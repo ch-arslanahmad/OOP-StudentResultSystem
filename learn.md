@@ -94,13 +94,43 @@ if char arrays are c-type (null-terminated) then there is simple assignment, oth
 ### Convert String to lowerCase
 
 
-You use 2 imports, `algorithm`, `string`, and we use the following line in code,
+You use 2 imports, `algorithm`, `string`, and we use the following line/function in code,
 
 ```cpp
 std::transform(a.begin(), a.end(), a.begin(), ::tolower);
 ```
 
+## List
 
+For starters,
+
+- Use the `push_front()` method to insert an element at the front of the list
+- Use the `push_back()` method to insert an element at the end of the list. 
+- Use the `pop_front()` method to remove the first element from the list.
+- Use the `pop_back()` method to remove the last element from the list.
+- Use the `size()` method to get the number of elements in the list.
+- Use the `remove()` method to remove elements by value.
+Syntax:
+
+```cpp
+list_name.remove(value_to_remove);
+list_name.remove(index, n); // removes n elements starting from index
+```
+## Vector Arrays
+
+For starters,
+
+- Use the `push_back()` method to insert an element at the end of the vector.
+- Use the `pop_back()` method to remove the last element from the vector.
+- Use the `size()` method to get the number of elements in the vector.
+- Use the `at()` method to access elements at a specific index with bounds checking.
+- find element using `std::find` from `<algorithm>` library.
+
+
+I think vector is better than list as it provides random access, whereas list is sequential access only.
+
+> [!NOTE]
+> However along with it, we need to take care of hashmaps/unordered_map when we want to map key-value pairs for fast lookup and access, but for simplicity, only keep vector arrays.
 
 ### Notes
 
