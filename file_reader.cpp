@@ -127,8 +127,6 @@ vector<SubjectGrade> readSubjectGrades(string filename) {
   return subjectGrades;
 }
 
-
-
 vector<GradePolicy> getGradePolicy(string filename) {
 
   ifstream rfGradePolicy(filename);
@@ -141,7 +139,6 @@ vector<GradePolicy> getGradePolicy(string filename) {
       continue; // skip comment lines
     }
     // process grade policy line
-    cout << line << endl;
     string course, semester, name, quantity, weightage, hasLab;
 
     istringstream iss(line);
@@ -153,6 +150,7 @@ vector<GradePolicy> getGradePolicy(string filename) {
     getline(iss, weightage, ',');
     getline(iss, hasLab, ',');
     // ... GradePolicy .  course, semester, name, quantity, weightage,
+
     gradePolicies.push_back(GradePolicy(
         course, convert.toInt(semester), name, convert.toInt(quantity),
         convert.toDouble(weightage), convert.toBool(hasLab)));
@@ -181,5 +179,7 @@ int main() {
 
   */
 
-  readSubjectGrades("data/sub-grades.txt");
+  // Test#2 - Grade Policy & Grades
+  // readSubjectGrades("data/sub-grades.txt");
+  getGradePolicy("data/grade-policy.txt");
 }

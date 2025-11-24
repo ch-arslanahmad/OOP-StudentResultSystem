@@ -1,10 +1,10 @@
-# Format: course, semester, name,quantity, weightage-perc, mode.
-BSIET,2,quiz,4,10,with_lab
-BSIET,2,assignment,4,10,with_lab
-BSIET,2,midterm,1,30,with_lab
-BSIET,2,final,1,50,with_lab
-BSIET,2,lab,16,10,with_lab
-BSIET,2,quiz,4,10,no_lab
-BSIET,2,assignment,4,10,no_lab
-BSIET,2,midterm,1,30,no_lab
-BSIET,2,final,1,50,no_lab
+# Format: course, semester,name,quantity, weightage-perc, hasLab.
+BSIET,2,quiz,4,10,true
+BSIET,2,assignment,4,10,true
+BSIET,2,midterm,1,30,true
+BSIET,2,final,1,50,true
+BSIET,2,lab,16,10,true
+BSIET,2,quiz,4,10,false
+BSIET,2,assignment,4,10,false
+BSIET,2,midterm,1,30,false
+BSIET,2,final,1,50,false
