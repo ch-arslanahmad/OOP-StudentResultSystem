@@ -10,7 +10,7 @@ Rather than building a plain CLI program that only takes input and displays outp
 - Subjects offered in each semester.
 - _Grades of students_ in quizzes, assignments, midterm, and final exams.
 
-The program will read these files, process the data, and output results in both the CLI and an output file, showing each student’s semester GPA and overall CGPA.
+The program will BOTH create & read these files, process the data, and output results in both the CLI and an output file, showing each student’s semester GPA and overall CGPA.
 
 > [!IMPORTANT]
 > The files need to be a specfic format to be read.

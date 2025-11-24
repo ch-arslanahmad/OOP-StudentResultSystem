@@ -1,26 +1,15 @@
 # Notes
 
-
 ## Plan (Todo)
 
-- [X] Finalize what files to make
-- [X] Make the files
-- [X] Finalize the files structure
+### Phase 1 – Create 1 File via Code
 
+The file must contain all data of all students, their subjects, grades etc over the semester.
 
-### Phase 1 – Data Integration (Functionality First)
-
-**Goal:** Build logic to correctly read and link all base data files before doing any calculations.
-
-- [x] Read `students.txt`
-- [x] Read `subjects.txt`
-- [x] Read `grade-policy.txt` (weightage of each component)
-- [x] Read `subgrades.txt`
-- [ ] Link students → subjects → grades using common identifiers
-- [ ] Verify merged data integrity (no missing subject or student references)
-  - [ ] See if Requires further enhancement, linking of files and for them to make sense .
-
-- [x] Read 1/2 lines from a file and print a meaningful output, i.e., `student: Arslan`, by reading from a file.
+- [x] Make a program that creates the file with Student (dummy) basic data only.
+- [x] Add subjects for the semester.
+- [ ] Add components for each subject (quizes, assignments, exams) with numbering. 
+- [] Add grades for each student in each subject (dummy data).
 
 ## Data Context
 
