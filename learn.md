@@ -132,6 +132,33 @@ I think vector is better than list as it provides random access, whereas list is
 > [!NOTE]
 > However along with it, we need to take care of hashmaps/unordered_map when we want to map key-value pairs for fast lookup and access, but for simplicity, only keep vector arrays.
 
+
+## Whitespace Removal
+
+This is a small note about removing whitespace from strings in C++.
+```cpp
+      a.erase(std::remove_if(a.begin(), a.end(),
+                             [](unsigned char c) { return std::isspace(c); }),
+              a.end());
+```
+
+This uses lambda function which are basically anonymous functions, explained later in this file.
+```cpp
+[](unsigned char c) { return std::isspace(c); }
+```
+This is function which looks over each character `c` in the string and checks if it is whitespace using `std::isspace(c)`, if so returns true, otherwise false.
+
+Now which calls this function,
+
+```cpp
+      a.erase(std::remove_if(a.begin(), a.end(),lamda_function()),
+              a.end());
+```
+
+So, the lamda function is called for each character in the string `a`, and if it returns true (i.e. the character is whitespace), that character is pushed to the end and marked by `remove_if` as garbage value and `a.erase` removes that garbage values from the string.
+
+## Lambda Functions
+
 ### Notes
 
 This file is for small learning notes.

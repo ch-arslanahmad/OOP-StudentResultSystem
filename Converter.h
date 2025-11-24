@@ -42,11 +42,25 @@ public:
         return false;
       }
 
+      // std::cout << "Size: " << a.size() << "\n"; // debug - to see the size
+      // of string passed
+
+      // removes spaces, to handle - ' false' or ' false '
+      // a.erase(std::remove(a.begin(), a.end(), ' '), a.end());
+
+      // remove all whitespace (spaces, tabs, CR, LF, etc.)  its implementation
+      // explained in learn.md
+      a.erase(std::remove_if(a.begin(), a.end(),
+                             [](unsigned char c) { return std::isspace(c); }),
+              a.end());
+
       // ? convert string to lowercase, regardless of case to see if true,
       // false
-
       // convert string to lower case
       std::transform(a.begin(), a.end(), a.begin(), ::tolower);
+
+      // ! for testing
+      // std::cout << "Status: " << a << "\n";
 
       /* if after lower case its
       true -> true otherwise,
