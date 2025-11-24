@@ -7,6 +7,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <unordered_map>
 #include <vector> // for list
 
 using namespace std;
@@ -21,7 +22,8 @@ bool fileExists(string filename) {
 }
 
 // ... data/students.txt - FUNCTION
-vector<Student> fetchStudentData(string filename) {
+vector<Student> fetchStudentData(string filename,
+                                 unordered_map<int, Student> &studentMap) {
   ifstream rfStudent(filename); // open file for reading
   cout << "\nReading Students File:\n";
 
@@ -50,12 +52,16 @@ vector<Student> fetchStudentData(string filename) {
     // ... Student .  SAP, name, course, semester
     students.push_back(
         Student(convert.toInt(sap), name, course, convert.toInt(semester)));
-  }
 
+    int key = convert.toInt(sap);
+    studentMap[key] = students.back(); // .back() returns last element
+    // hashmap [key, value] = [123456, Student Object]
+  }
   return students;
 }
 
-vector<Subject> fetchSubjectData(string filename) {
+vector<Subject> fetchSubjectData(string filename,
+                                 unordered_map<string, Subject> &subjectMap) {
 
   // read SUBJECTS file
   ifstream rfSubject(filename);
@@ -82,11 +88,17 @@ vector<Subject> fetchSubjectData(string filename) {
     subjects.push_back(Subject(course, convert.toInt(semester), code, name,
                                convert.toInt(creditHours),
                                convert.toBool(hasLab)));
+
+    string key = course + "_" + code;  // making unique key
+    subjectMap[key] = subjects.back(); // .back() returns last element
+    // hashmap [key, value] = [BSIET_CS101, Subject Object]
   }
   return subjects;
 }
 
-vector<SubjectGrade> readSubjectGrades(string filename) {
+vector<SubjectGrade>
+readSubjectGrades(string filename,
+                  unordered_map<string, SubjectGrade> &subjectGradeMap) {
 
   if (fileExists(filename)) {
     cout << "\nFile Found: " << filename << endl;
@@ -122,12 +134,20 @@ vector<SubjectGrade> readSubjectGrades(string filename) {
                      subjectCode, component, convert.toInt(index),
                      convert.toInt(total), convert.toInt(obtained)));
     count++;
+
+    string key = course + "_" + subjectCode + "_" + component + "_" +
+                 index;                          // making unique key
+    subjectGradeMap[key] = subjectGrades.back(); // .back() returns last element
+
+    // hashmap [key, value] = [BSIET_CS101_Midterm_1, SubjectGrade Object]
   }
   cout << "\nTotal Subject Grades Records Loaded: " << count << endl;
   return subjectGrades;
 }
 
-vector<GradePolicy> getGradePolicy(string filename) {
+vector<GradePolicy>
+getGradePolicy(string filename,
+               unordered_map<string, GradePolicy> &gradePolicyMap) {
 
   ifstream rfGradePolicy(filename);
   Converter convert;
@@ -154,6 +174,11 @@ vector<GradePolicy> getGradePolicy(string filename) {
     gradePolicies.push_back(GradePolicy(
         course, convert.toInt(semester), name, convert.toInt(quantity),
         convert.toDouble(weightage), convert.toBool(hasLab)));
+
+    string key = name + "_" + hasLab;           // making unique key
+    gradePolicyMap[key] = gradePolicies.back(); // .back() returns last element
+
+    // hashmap [key, value] = [quiz_true, GradePolicy Object]
   }
   return gradePolicies;
 }
@@ -181,5 +206,6 @@ int main() {
 
   // Test#2 - Grade Policy & Grades
   // readSubjectGrades("data/sub-grades.txt");
-  getGradePolicy("data/grade-policy.txt");
+  unordered_map<string, GradePolicy> gradePolicyMap;
+  getGradePolicy("data/grade-policy.txt", gradePolicyMap);
 }
