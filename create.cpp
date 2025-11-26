@@ -4,23 +4,24 @@
 #include<fstream> // for file handling
 #include<string>
 #include<vector> // for resizable arrays
+#include "Random.h" // for random val generation
 using namespace std;
 
 
 // combines components name with component number
-void createTotalComponents(const string components[], int components_max[], int size, vector<string> &component_arrays) {
+void createTotalComponents(const string components[], int components_max[], int component_max_grades[], int size, vector<string> &component_arrays) {
 
     for (int i = 0; i < size; i++) 
     {
-        for (int o = 1; o <= components_max[i] ; o++)
-            component_arrays.push_back(components[i] + "_" + to_string(o));
+        for (int o = 1; o <= components_max[i] ; o++) {
+            int max_grades = component_max_grades[i];
+        component_arrays.push_back(components[i] + "_" + to_string(o) + "," + to_string(max_grades) + "," + to_string(genRandomVal(0, max_grades)));
+        }
     }
 }
 
 
 // combines no_of_components with teachers
-
-// todo - correct this function
 void combineComponentswithSubjects(string subjects[], string subject_code[], int credit_hours[], int size, vector<string> all_components, vector<string> &subject_with_components) {
     string line;
     for (int i = 0; i < size; i++)
@@ -49,40 +50,33 @@ int main() {
     string subject_code[5] = {"CS011", "EM022", "DC33", "CS044", "MA055"};
     int subject_credit_hours[5] = {4, 3, 4, 3, 3};
     string components[5] = {"assignment", "quiz", "midterm", "finalterm", "labs"};
-    int components_max[5] = {4,4,1,1,16};
+    int component_max_grades[] = {10,10,30,40,10};
 
-// test#2 complete - CREATING all COMPONENENTS of a subject
-        vector<string> all_components;
-        createTotalComponents(components, components_max, 5, all_components);
-        for(string a : all_components) {
-            cout << a << endl;
-        }
-// ...COMPLETED test#3 - if files, all subject get all components with correct numbering
+
+    int components_max[5] = {4, 4, 1, 1, 16};
+
+    vector<string> all_components;
+    createTotalComponents(components, components_max, component_max_grades, 5, all_components);
         vector<string> subject_with_components;
         combineComponentswithSubjects(subjects, subject_code,subject_credit_hours, 5, all_components, subject_with_components);
-
-for(string a : subject_with_components) {
-    cout << a << endl;
-}
-
-cout << "Size: " << subject_with_components.size()<<endl;
 
 
 // suppose there are 50 students
 
-// todo: correct this loop, even though enough for testing
-
-// test#1 - write basic info in a file
-
+/* ... for each student:
+total components = (4+4+1+1+16) = 26 components
+for each subject = 26 entries
+1 student (5 subjects) = 5 * 26 = 130 entries
+*/
 int n_of_students = 1;
+        wf << "#Format," << "id,name,semester,subject,subject_code,credit_hours,component_type/number,total,obtained(random)" << endl;
 
-for (int student = 0; student <= n_of_students; student++)
+for (int student = 1; student <= n_of_students; student++)
 {
 
     for (int i = 0; i < subject_with_components.size(); i++)
     {
-        wf << "7017707" << student << "," << "Name" << student << "," << "Fall-2025" << "," << subject_with_components[i]<<endl;
-
+        wf << "7017707" << student << "," << "Name" << student << "," << "Fall-2025" << "," << subject_with_components[i] << endl;
     }
 }
 }
