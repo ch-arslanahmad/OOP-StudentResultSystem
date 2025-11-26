@@ -91,8 +91,11 @@ if char arrays are c-type (null-terminated) then there is simple assignment, oth
   std::string char_to_string(const char *a) { return std::string(a); }
 ```
 
-### Convert String to lowerCase
+### Convert anything to string
 
+You can use `std::to_string()` function to convert any primitive data type to string like `double`, `int`, `float` etc.
+
+### Convert String to lowerCase
 
 You use 2 imports, `algorithm`, `string`, and we use the following line/function in code,
 
@@ -158,6 +161,51 @@ Now which calls this function,
 So, the lamda function is called for each character in the string `a`, and if it returns true (i.e. the character is whitespace), that character is pushed to the end and marked by `remove_if` as garbage value and `a.erase` removes that garbage values from the string.
 
 ## Lambda Functions
+
+Lambda functions are basically anonymous functions, which can be defined in place without naming them.
+
+For example, in the whitespace removal example above, we had a lambda function, but for simplicity sake ,
+
+```cpp
+auto isEven = [](int x) { return x % 2 == 0; };
+```
+You can call it wherever like a normal function like,
+
+```cpp
+if(isEven(4)) {
+    // do something
+}
+```
+
+This defined a lamda function to find if a number is even or not, and assigned it to variable `isEven`, which can be called like a normal function.
+
+Its syntax is:
+
+```cpp
+[capture list] (parameters) -> return_type { function_body }
+```
+
+`[]` is used to capture variables from the surrounding scope, if needed as by default
+- its empty
+- all variables (in program) are out of scope.
+
+`(parameters)` is the list of parameters the function takes.
+
+`-> return_type` is optional, if omitted, the compiler will deduce the return type.
+
+`{ function_body }` is the actual code of the function.
+
+
+### Why Used
+
+They are used because they are concise and can be defined in place, making code more readable and maintainable, especially for short functions that are used only once like in this case, `isEven` or whitespace removal.
+
+In summary,
+
+- Write small functions inline
+- No need to name or declare functions elsewhere
+- Makes STL algorithms (sort, for_each, copy_if, etc.) powerful and short
+- More readable when the logic is tiny
 
 ### Notes
 
