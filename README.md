@@ -2,6 +2,9 @@
 
 Student Result Manger, track subjects, their grades in assignments, quizes and exams and computing semester CGPA.
 
+
+The whole project is creating one file which will hold data of all students, their subjects, grades in assignments, quizzes and exams. and then program that will read this file, process the data and output each student's semester GPA and overall CGPA.
+
 ## Idea
 
 Rather than building a plain CLI program that only takes input and displays output (in CLI), this project will simulate a classroom environment. We will use dummy data files containing:
