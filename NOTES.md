@@ -4,12 +4,32 @@
 
 ### Phase 1 – Create 1 File via Code
 
+
+
+
 The file must contain all data of all students, their subjects, grades etc over the semester.
 
 - [x] Make a program that creates the file with Student (dummy) basic data only.
 - [x] Add subjects for the semester.
-- [ ] Add components for each subject (quizes, assignments, exams) with numbering. 
-- [] Add grades for each student in each subject (dummy data).
+- [x] Add components for each subject (quizes, assignments, exams) with numbering. 
+- [x]] Add grades for each student in each subject (dummy data).
+
+
+### Phase 2 – Read File and Compute GPA
+
+> [!IMPORTANT]
+> Goal: compute each student’s GPA from raw component marks.
+
+- [ ] For each subject, divide the component marks to their weightage
+  - [ ] Sum the (calculated) marks
+    - [ ] totalMarksPerSubject = sum of component full marks (normally 100)
+    - [ ] obtainedMarksPerSubject = sum of component obtained marks
+- [ ] Store them in a HashMap
+- [ ] Convert the normalized score to a grade point using standard conditions
+- [ ] Multiply grade point by credit hours to get weighted grade point
+- [ ] GPA = sum(weightedGradePoints) / sum(creditHours) for the student
+  - [ ] Display GPA per student
+
 
 ## Data Context
 

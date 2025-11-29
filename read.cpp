@@ -10,6 +10,12 @@ using namespace std;
 int main()
 {
 
+  map<string, int> weightage = {{"assignment", 10},
+                                {"quiz", 10},
+                                {"labs", 10},
+                                {"midterm", 30},
+                                {"finalterm", 40}};
+
   Converter convert;
 
   string component_pattern[3] = {
@@ -45,9 +51,13 @@ int main()
 
   map<int, string> students;
   map<string, int> subjects;
-  map<string, int> components;
+  set<int> saps;
 
-  set<string> component_grades;
+  // ... so set is of string, 70177071,oop,assignment_total/obtained
+  // set<string> component_total_grades;
+  //* [key, value[key,value[key,pair(float,float)]]]
+  map<int, map<string, map<string, pair<float, float>>>> grades;
+
   for (string line : lines)
   {
     istringstream iss(line);
@@ -64,7 +74,9 @@ int main()
     getline(iss, str_total, ',');
     getline(iss, str_obtained, ',');
 
-    students[convert.toInt(str_sap)] = str_name;
+    int iSap = convert.toInt(str_sap);
+    students[iSap] = str_name;
+    saps.insert(iSap);
     subjects[str_subject] = convert.toInt(str_credit_hours); // store subject and its credit hours
 
     // get total and obtained marks
@@ -80,36 +92,45 @@ int main()
 
       getline(iss2, component, '_');
       getline(iss2, str_component_no);
-      string temp = str_sap + "," + str_subject + "," + component + "_" + str_total + "/" + str_obtained;
-      component_grades.insert(temp);
+
+      int sap = convert.toInt(str_sap);
+      // map[sap][subject][component] = pair(total, obtained)
+      grades[sap][str_subject][component].first += total;
+      grades[sap][str_subject][component]
+          .second += obtained;
     }
   }
 
-  set<string> component_total_grades;
-  int count = 0;
-  for (string line : component_grades)
+  // sap, subject, (total, obtained)
+  map<int, map<string, pair<float, float>>> subject_grades;
+  for (int sap : saps)
   {
-
-    istringstream iss(line);
-
-    string str_sap, str_subjects, str_components, str_total, str_obtained;
-
-    getline(iss, str_sap, ',');
-    getline(iss, str_subjects, ',');
-    getline(iss, str_components, '_');
-    getline(iss, str_total, '/');
-    getline(iss, str_obtained);
-
-    if (regex_match(str_components, r))
+    for (auto &subject : subjects)
+    {
+      for (auto &component : weightage)
       {
-        count++;
-        total += convert.toInt(str_total);
-        obtained += convert.toInt(str_obtained);
-        if(count >= 4) {
-          count = 0;
-        }
+        // this gives us the n% of weigtage of components;
+        grades[sap][subject.first][component.first].first *= (component.second / 100.0);  // total
+        grades[sap][subject.first][component.first].second *= (component.second / 100.0); // obtained
+        float total = grades[sap][subject.first][component.first].first;
+        float obtained = grades[sap][subject.first][component.first].second;
+        subject_grades[sap][subject.first] = pair(total, obtained);
       }
+    }
   }
+
+  for (int sap : saps)
+  {
+    for (auto &subject : subjects)
+    {
+      cout << "Sap: " << sap << "\t";
+      cout << "Subject: " << subject.first << endl;
+      pair<float, float> marks = subject_grades[sap][subject.first];
+      cout << "Total: " << marks.first << "\nObtained: " << marks.second << endl;
+    }
+  }
+
+  // find total marks of each subject for each student
 
   return 0;
 }
