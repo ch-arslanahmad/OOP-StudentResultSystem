@@ -20,15 +20,17 @@ The file must contain all data of all students, their subjects, grades etc over 
 > [!IMPORTANT]
 > Goal: compute each student’s GPA from raw component marks.
 
-- [ ] For each subject, divide the component marks to their weightage
-  - [ ] Sum the (calculated) marks
-    - [ ] totalMarksPerSubject = sum of component full marks (normally 100)
-    - [ ] obtainedMarksPerSubject = sum of component obtained marks
-- [ ] Store them in a HashMap
-- [ ] Convert the normalized score to a grade point using standard conditions
-- [ ] Multiply grade point by credit hours to get weighted grade point
-- [ ] GPA = sum(weightedGradePoints) / sum(creditHours) for the student
-  - [ ] Display GPA per student
+- [x] Get all data from the file created in Phase 1.
+- [x] Get Marks
+  - [x] Sum all its totals and sum all its obtained marks.
+  - [x] Compute ratio = obtained / total (e.g., 24/40 = 0.60 → 60%).
+  - [] Multiply ratio by the component weight (e.g., 0.60 × 10% = 6.0).
+  - [x] Add all five components to get subject score out of 100.
+- [x] Store them in a HashMap
+- [x] Convert the normalized score to a grade point using standard conditions
+- [x] Multiply grade point by credit hours to get weighted grade point
+- [x] GPA = sum(weightedGradePoints) / sum(creditHours) for the student
+  - [x] Display GPA per student
 
 
 ## Data Context
