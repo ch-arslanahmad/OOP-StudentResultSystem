@@ -105,7 +105,7 @@ int main()
   }
 
   // MAX CREDIT HOURS
-  int totalcredit = 0;
+  float totalcredit = 0.0;
   for (auto &subject : subjects)
   {
     totalcredit += subject.second;
@@ -154,7 +154,6 @@ int main()
   map<int, float> endpoints;
   // sap, total endpoints = totalendpoints
   map<int, float> totalendpoints;
-  vector<string> grade;
   for (int sap : saps)
   {
     for (auto &subject : subjects)
@@ -167,7 +166,6 @@ int main()
       {
         endpoints[sap] = 4.0 * subject.second;
         totalendpoints[sap] = totalendpoints[sap] + endpoints[sap];
-        // grade = "A";
       }
 
       // condition 2
@@ -175,7 +173,6 @@ int main()
       {
         endpoints[sap] = 3.75 * subject.second;
         totalendpoints[sap] = totalendpoints[sap] + endpoints[sap];
-        // grade = "A-";
       }
 
       // condition 3
@@ -183,58 +180,49 @@ int main()
       {
         endpoints[sap] = 3.5 * subject.second;
         totalendpoints[sap] = totalendpoints[sap] + endpoints[sap];
-        // grade = "B+";
       }
 
       if (obtained >= 70 && obtained < 75)
       {
         endpoints[sap] = 3.0 * subject.second;
         totalendpoints[sap] = totalendpoints[sap] + endpoints[sap];
-        // grade = "B";
       }
 
       if (obtained >= 65 && obtained < 70)
       {
         endpoints[sap] = 2.50 * subject.second;
         totalendpoints[sap] = totalendpoints[sap] + endpoints[sap];
-        // grade = "C+";
       }
       if (obtained >= 60 && obtained < 65)
       {
         endpoints[sap] = 2.00 * subject.second;
         totalendpoints[sap] = totalendpoints[sap] + endpoints[sap];
-        // grade = "C-";
       }
       if (obtained >= 55 && obtained < 60)
       {
         endpoints[sap] = 1.50 * subject.second;
         totalendpoints[sap] = totalendpoints[sap] + endpoints[sap];
-        // grade = "D+";
       }
       if (obtained >= 50 && obtained < 55)
       {
         endpoints[sap] = 1.00 * subject.second;
         totalendpoints[sap] = totalendpoints[sap] + endpoints[sap];
-        // grade = "D";
       }
       if (obtained >= 0 && obtained < 50)
       {
         endpoints[sap] = 0.00 * subject.second;
         totalendpoints[sap] = totalendpoints[sap] + endpoints[sap];
-        // grade = "F";
       }
     }
-
-    const int MAX_GRADE = 100;
-
-    for (auto sap : saps)
-    {
-      float gpa = totalendpoints[sap] / totalcredit;
-      cout << "SAP: " << sap << ", Name: " << students[sap] << ", GPA: " << gpa << endl;
-    }
-
-    // find total marks of each subject for each student
-
-    return 0;
   }
+
+  // saps, and their gpas
+  map<int, float> gpas;
+  for (auto sap : saps)
+  {
+    gpas[sap] = totalendpoints[sap] / totalcredit;
+    cout << "SAP: " << sap << ", Name: " << students[sap] << ", GPA: " << gpas[sap] << endl;
+  }
+
+  return 0;
 }
