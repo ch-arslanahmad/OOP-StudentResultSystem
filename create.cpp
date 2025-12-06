@@ -66,7 +66,7 @@ int main()
     1 student (5 subjects) = 5 * 26 = 130 entries
     */
     int n_of_students = 5;
-    wf << "#Format," << "id,name,semester,subject,subject_code,credit_hours,component_type/number,total,obtained(random)" << endl;
+    wf << "#id,name,semester,subject,subject_code,credit_hours,component_type_n,total,obtained(random)" << endl;
 
     for (int student = 1; student <= n_of_students; student++)
     {

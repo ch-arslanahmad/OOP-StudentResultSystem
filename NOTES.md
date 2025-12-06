@@ -57,7 +57,7 @@ The weightage will be seperate based on if they have lab or not.
 
 For example with lab,
 
-Assignments & Quizzes total - 20%
+Assignments & Quizzes total - 20% (10% each)
 Midterm - 30%
 Final - 40%
 Lab - 10%
@@ -114,3 +114,5 @@ if lab subject has
 Then for 5 subjects = 1300 lines
 
 i think vector manual linear search will get hectic and it is now a necessity to use a hashmap!
+
+So making multiple hashmaps that have a common identifier (student sap) to link them all together.
