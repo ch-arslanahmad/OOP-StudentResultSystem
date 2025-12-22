@@ -32,6 +32,8 @@ public:
       return std::stof(a);
     } catch (const std::invalid_argument &e) {
       // Return error code quietly without printing
+      std::cerr << e.what() << '\n';
+
       return -1.0f;
     }
   }
