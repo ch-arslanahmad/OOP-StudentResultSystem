@@ -4,9 +4,18 @@
 #include <string>
 class Converter {
 public:
+  void trim(std::string &a) {
+    // Trim whitespace from both ends
+    a.erase(std::remove_if(a.begin(), a.end(),
+                           [](unsigned char c) { return std::isspace(c); }),
+            a.end());
+  }
+
   // convert to int
   int toInt(std::string a) {
     try {
+
+      trim(a);
       return std::stoi(a);
     } catch (const std::invalid_argument &e) {
       std::cerr << e.what() << '\n';
@@ -17,16 +26,20 @@ public:
   // convert to float
   float toFloat(std::string a) {
     try {
+
+      trim(a);
+
       return std::stof(a);
     } catch (const std::invalid_argument &e) {
-      std::cerr << e.what() << '\n';
-      return -1.0f; // error code
+      // Return error code quietly without printing
+      return -1.0f;
     }
   }
 
   // convert to double
   double toDouble(std::string a) {
     try {
+      trim(a);
       return std::stod(a);
     } catch (const std::invalid_argument &e) {
       std::cerr << e.what() << '\n';
@@ -36,7 +49,7 @@ public:
 
   bool toBool(std::string a) {
     try {
-
+      trim(a);
       // return false if string empty
       if (a.empty()) {
         return false;
