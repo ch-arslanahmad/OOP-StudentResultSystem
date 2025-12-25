@@ -1,4 +1,5 @@
 #include "Converter.h"
+#include "Grades.h"
 #include <fstream>
 #include <iomanip>
 #include <iostream>
@@ -82,7 +83,7 @@ Student extractStudent(string line) {
   istringstream iss2(str_components);
 
   // string temp;
-  getline(iss2, str_components, '_'); // to get component type
+  getline(iss2, str_components, ','); // to get component type
 
   return Student(convert.toInt(str_sap), str_name, str_semester, str_subject,
                  convert.toFloat(str_credit_hours), str_components,
@@ -121,15 +122,15 @@ set<string> getAllData() {
   return lines;
 }
 
-Student getStudentGradesPerSubject(string line) {
-  Converter convert;
+// 70177071,applied-maths-ii,100.000000_82.250000
+Student getStudentGradesPerSubject(string line, Converter convert) {
   string str_sap, str_subject, str_total, str_obtained;
 
   istringstream iss(line);
   getline(iss, str_sap, ',');
   getline(iss, str_subject, ',');
-  getline(iss, str_total, '_');
-  getline(iss, str_obtained, ',');
+  getline(iss, str_total, ',');
+  getline(iss, str_obtained);
 
   Student student =
       Student(convert.toInt(str_sap), str_subject, convert.toFloat(str_total),
@@ -138,16 +139,19 @@ Student getStudentGradesPerSubject(string line) {
   return student;
 }
 
-Student getStudentSubjectComponentGrades(string line) {
-  Converter convert;
+Student getStudentSubjectComponentGrades(string line, Converter convert) {
   string str_sap, str_subject, str_components, str_total, str_obtained;
 
   istringstream iss(line);
   getline(iss, str_sap, ',');
   getline(iss, str_subject, ',');
   getline(iss, str_components, ',');
-  getline(iss, str_total, '_');
-  getline(iss, str_obtained, ',');
+  getline(iss, str_total, ',');
+  getline(iss, str_obtained);
+
+  auto pos = str_components.find('_');
+  if (pos != string::npos)                          // only if _ is found
+    str_components = str_components.substr(0, pos); // removes the _number
 
   return Student(convert.toInt(str_sap), str_subject, str_components,
                  convert.toFloat(str_total), convert.toFloat(str_obtained));
@@ -171,7 +175,7 @@ Student getStudentMarks(string line) {
 
   istringstream iss(line);
   getline(iss, str_sap, ',');
-  getline(iss, str_total, '_');
+  getline(iss, str_total, ',');
   getline(iss, str_obtained, ',');
 
   return Student(convert.toInt(str_sap), convert.toFloat(str_total),
@@ -180,9 +184,9 @@ Student getStudentMarks(string line) {
 
 bool regex_compare(const string &component) {
   // Define the regex pattern to match valid component types
-  const regex pattern(
-      "^(assignment|quiz|labs|midterm|finalterm)(_total|_obtained)?$");
-
+  // Allows: assignment, quiz, labs, midterm, finalterm
+  // With optional suffixes: _1, _2, _total, _obtained, etc.
+  const regex pattern("^(assignment|quiz|labs|midterm|finalterm)(_.+)?$");
   // Perform the regex match
   return regex_match(component, pattern);
 }
@@ -202,10 +206,19 @@ void removeUselessKeys(set<string> &keys_with_grades, float weightage[],
   for (const auto &key_with_grades : keys_with_grades) {
 
     // Extract the main part and the totals
-    Student student = getStudentSubjectComponentGrades(key_with_grades);
+    Student student =
+        getStudentSubjectComponentGrades(key_with_grades, convert);
 
-    string sap_subject_component = to_string(student.sap) + "_" +
-                                   student.subject + "_" + student.component;
+    string sap_subject_component = to_string(student.sap) + "," +
+                                   student.subject + "," + student.component;
+
+    // remove invalid components | Validate component using regex (use
+    // parsed component directly)
+
+    if (!regex_compare(student.component)) {
+      keys_to_remove.insert(key_with_grades);
+      continue; // Skip further processing for invalid components
+    }
 
     float total = student.total;
 
@@ -217,28 +230,25 @@ void removeUselessKeys(set<string> &keys_with_grades, float weightage[],
 
     // Check if there's a higher total for the same sap_subject_component
     for (const auto &other_key : keys_with_grades) {
+      if (key_with_grades == other_key)
+        continue; // skip itself
 
-      Student other = getStudentSubjectComponentGrades(other_key);
+      Student other = getStudentSubjectComponentGrades(other_key, convert);
 
-      float other_total = other.total;
-
-      string other_sap_subject_component =
-          to_string(other.sap) + "_" + other.subject + "_" + other.component;
+      // Quick check: if different component type, skip expensive string
+      // construction
+      if (student.sap != other.sap || student.subject != other.subject ||
+          student.component != other.component)
+        continue;
 
       // If same component but higher total exists, mark current for removal
-      if (sap_subject_component == other_sap_subject_component &&
-          total < other_total) {
+      if (total < other.total) {
         keys_to_remove.insert(key_with_grades);
         break;
       }
     }
-
-    // Validate component using regex (use parsed component directly)
-    if (!regex_compare(student.component)) {
-      keys_to_remove.insert(key_with_grades);
-      continue;
-    }
   }
+
   // Remove invalid keys
   for (const auto &key : keys_to_remove) {
     keys_with_grades.erase(key);
@@ -255,7 +265,7 @@ set<string> getComponentGradePerWeightage(set<string> keys_with_grades,
   // For each student and subject, calculate final grade
   for (const auto keys : keys_with_grades) {
 
-    Student student = getStudentSubjectComponentGrades(keys);
+    Student student = getStudentSubjectComponentGrades(keys, convert);
 
     float total = student.total;
     float obtained = student.obtained;
@@ -264,7 +274,12 @@ set<string> getComponentGradePerWeightage(set<string> keys_with_grades,
     float weighted_obtained = 0.0f;
 
     for (int i = 0; i < size; i++) {
-      if (student.component == components[i]) {
+      // finds if student.component matches any of the valid components
+      // student.component.find(components[i]) == 0 checks if component starts
+      // with the valid component name
+
+      if (regex_compare(student.component) &&
+          student.component.find(components[i]) == 0) {
 
         if (student.component == "labs") {
           total = total / 16; // since 16 labs
@@ -278,13 +293,17 @@ set<string> getComponentGradePerWeightage(set<string> keys_with_grades,
         }
 
         weighted_total = weightage[i];
-        weighted_obtained = (obtained / total) * weightage[i];
+        if (total > 0)
+          weighted_obtained = (obtained / total) * weightage[i];
+        else {
+          weighted_obtained = 0;
+        }
       }
     }
 
     string temp_new_keys = to_string(student.sap) + "," + student.subject +
                            "," + student.component + "," +
-                           to_string(weighted_total) + "_" +
+                           to_string(weighted_total) + "," +
                            to_string(weighted_obtained);
     component_grades.insert(temp_new_keys);
   }
@@ -294,11 +313,11 @@ set<string> getComponentGradePerWeightage(set<string> keys_with_grades,
 // THIS function will recieve data in the followign format,
 
 /*
-70177071,applied-maths-ii,assignment,10.000000_5.250000
-70177071,applied-maths-ii,finalterm,40.000000_39.000000
-70177071,applied-maths-ii,labs,10.000000_4.250000
-70177071,applied-maths-ii,midterm,30.000000_28.000000
-70177071,applied-maths-ii,quiz,10.000000_5.750000
+70177071,applied-maths-ii,assignment,10.000000,5.250000
+70177071,applied-maths-ii,finalterm,40.000000,39.000000
+70177071,applied-maths-ii,labs,10.000000,4.250000
+70177071,applied-maths-ii,midterm,30.000000,28.000000
+70177071,applied-maths-ii,quiz,10.000000,5.750000
 */
 set<string> getGradesPerSubjectPerStudent(set<string> component_grades,
                                           const set<int> &saps,
@@ -312,7 +331,7 @@ set<string> getGradesPerSubjectPerStudent(set<string> component_grades,
 
   for (const auto &grade : component_grades) {
 
-    Student student = getStudentSubjectComponentGrades(grade);
+    Student student = getStudentSubjectComponentGrades(grade, convert);
 
     // Skip if not in given saps/subjects
     if (!saps.count(student.sap) || !subjects.count(student.subject))
@@ -324,67 +343,126 @@ set<string> getGradesPerSubjectPerStudent(set<string> component_grades,
     if (processed.count(sap_subject))
       continue;
 
-    float total_sum = 0.0f;
+    float total_sum = 0.0f; // total weightage per subject is 100
     float obtained_sum = 0.0f;
 
     // Sum all components for this student+subject
     for (const auto &other_grade : component_grades) {
-      Student other = getStudentSubjectComponentGrades(other_grade);
+      Student other = getStudentSubjectComponentGrades(other_grade, convert);
+
       if (other.sap == student.sap && other.subject == student.subject) {
         total_sum += other.total;
         obtained_sum += other.obtained;
       }
     }
-
-    // Insert aggregated grade into the result set
-    string final_grade = to_string(student.sap) + "," + student.subject + "," +
-                         to_string(total_sum) + "_" + to_string(obtained_sum);
-    subject_grades.insert(final_grade);
-
     // Mark this student+subject as processed
     processed.insert(sap_subject);
+
+    // Insert aggregated grade into the result set
+    string final_grade =
+        to_string(student.sap) + "," + student.subject + "," + to_string(100) +
+        "," +
+        to_string(
+            (obtained_sum / total_sum) *
+            100); // 146 is converted to 100 scale ≈ 146/230*100 = // ? 63.48
+    subject_grades.insert(final_grade);
   }
+
   return subject_grades;
+}
+
+set<pair<string, string>> getPair(set<string> lines) {
+  set<pair<string, string>> pairs;
+  for (string line : lines) {
+    istringstream iss(line);
+    string str_first, str_second;
+    getline(iss, str_first, ',');
+    getline(iss, str_second, ',');
+    pairs.insert(make_pair(str_first, str_second));
+  }
+  return pairs;
+  /* to get access to first value, we use pair.first and second value, use
+   * pair.second */
 }
 
 // THIS function will recieve data in the following format,
 /*
-70177071_applied-maths-ii_130.00_85.50
-70177071_applied-physics-ii_100.00_75.00
+70177071_applied-maths-ii_130.00,85.50
+70177071_applied-physics-ii_100.00,75.00
 */
-set<string> getGradePerStudent(set<string> subject_grades) {
+set<string> getGradePerStudent(set<string> subject_grades, set<string> students,
+                               set<string> subject_credit_hours,
+                               float total_credit_hours, Converter convert) {
 
-  set<string> students_grades;
-  set<int> processed; // to track processed SAPs
+  set<int> processed;
+  set<string> sap_gpas;
+
+  // Pre-parse pairs once instead of per student
+  set<pair<string, string>> subject_credit_pairs =
+      getPair(subject_credit_hours);
+  set<pair<string, string>> student_pairs = getPair(students);
+
   for (const auto &student_grade : subject_grades) {
+    Student student = getStudentGradesPerSubject(student_grade, convert);
 
-    Student student = getStudentGradesPerSubject(student_grade);
-
-    // Skip if already processed this student
+    // Skip if already processed - mark immediately
     if (processed.count(student.sap))
       continue;
+
+    processed.insert(student.sap); // Mark processed NOW
 
     float total_sum = 0.0f;
     float obtained_sum = 0.0f;
 
-    // Sum all components for this student+subject
+    // Sum all subjects for this student
     for (const auto &other_grade : subject_grades) {
-      Student other = getStudentGradesPerSubject(other_grade);
-      if (other.sap == student.sap) { // sum per student
+      Student other = getStudentGradesPerSubject(other_grade, convert);
+      if (other.sap == student.sap) {
         total_sum += other.total;
         obtained_sum += other.obtained;
       }
-
-      string student_grades_str = to_string(student.sap) + "," +
-                                  to_string(total_sum) + "_" +
-                                  to_string(obtained_sum);
-
-      students_grades.insert(student_grades_str);
-      processed.insert(student.sap);
     }
+
+    // Scale to percentage (out of 500 -> out of 100)
+    float total = total_sum / 500 * 100;
+    float obtained = obtained_sum / 500 * 100;
+
+    // Find student name
+    string student_name;
+    for (const auto &sp : student_pairs) {
+      if (to_string(student.sap) == sp.first) {
+        student_name = sp.second;
+        break;
+      }
+    }
+
+    // Calculate GPA using overall percentage (not per-subject)
+    // For overall GPA, we can use average credit hours or just pass total
+    float gpa =
+        handleGrades(obtained, total, total_credit_hours, total_credit_hours);
+
+    string sap_gpa_str =
+        to_string(student.sap) + "," + student_name + "," + to_string(gpa);
+    sap_gpas.insert(sap_gpa_str);
   }
-  return students_grades;
+
+  return sap_gpas;
 }
+
+/*
+  GPA Calculation Logic:
+  1. For each student, retrieve their total obtained marks and total marks.
+  2. Calculate the percentage: (total_obtained / total_marks) * 100
+  3. Convert percentage to GPA on a 4.0 scale:
+     - 90-100% -> 4.0
+     - 80-89%  -> 3.0
+     - 70-79%  -> 2.0
+     - 60-69%  -> 1.0
+     - Below 60% -> 0.0
+  4. Store or print the GPA for each student.
+*/
+
+
 
 int main() {
   string components[5] = {"assignment", "quiz", "labs", "midterm",
@@ -393,13 +471,10 @@ int main() {
   float weightage[5] = {10.0f, 10.0f, 10.0f, 30.0f, 40.0f};
   Converter convert;
 
-  ifstream rf("data/data.txt");
-
-  string line;
-
   set<string> subjects;
-
-  set<string> last_iteration;
+  set<float> credit_hours;
+  set<string> subject_credits; // holds subject and its credit hours
+  set<string> students;
   set<int> saps;
   // ... so set is of string, 70177071,oop,assignment_total/obtained
 
@@ -412,13 +487,18 @@ int main() {
   set<string> keys_with_grades;
   for (string line : lines) {
 
-    last_iteration.insert(line); // inserting to test
-
     Student student = extractStudent(line);
 
     saps.insert(student.sap);
 
     subjects.insert(student.subject);
+
+    credit_hours.insert(student.credit_hours);
+
+    subject_credits.insert(student.subject + "," +
+                           to_string(student.credit_hours));
+
+    students.insert(to_string(student.sap) + "," + student.name);
 
     // get total and obtained marks
     int total = student.total;
@@ -439,11 +519,13 @@ int main() {
     }
 
     string key_with_grades =
-        key + "," + to_string(temp_total) + "_" + to_string(temp_obtained);
+        key + "," + to_string(temp_total) + "," + to_string(temp_obtained);
     keys_with_grades.insert(key_with_grades);
   }
 
   removeUselessKeys(keys_with_grades, weightage, components, 5, convert);
+
+  // printSet(keys_with_grades);
 
   // now after this we have output in the following format
   /*
@@ -462,9 +544,19 @@ int main() {
   set<string> subject_grades =
       getGradesPerSubjectPerStudent(component_grades, saps, subjects, convert);
 
+  float total_credit_hours = 0.0f;
+  for (float credit_hours : credit_hours) {
+    total_credit_hours += credit_hours;
+  }
 
-  set<string> students_marks = getGradePerStudent(subject_grades);
+  // ... GOOD UP UNTIL THIS POINT
+
+  set<string> students_marks = getGradePerStudent(
+      subject_grades, students, subject_credits, total_credit_hours, convert);
+
   printSet(students_marks);
+
+
 
   return 0;
 }
