@@ -1,14 +1,10 @@
 #include "Converter.h"
 #include "Grades.h"
 #include <fstream>
-#include <iomanip>
 #include <iostream>
-#include <map>
 #include <regex>
 #include <set>
 #include <sstream>
-#include <string>
-#include <vector>
 using namespace std;
 
 struct Student {
@@ -80,10 +76,9 @@ Student extractStudent(string line) {
   getline(iss, str_total, ',');
   getline(iss, str_obtained, ',');
 
-  istringstream iss2(str_components);
-
-  // string temp;
-  getline(iss2, str_components, ','); // to get component type
+  auto pos = str_components.find('_');
+  if (pos != string::npos)                          // only if _ is found
+    str_components = str_components.substr(0, pos); // removes the _number
 
   return Student(convert.toInt(str_sap), str_name, str_semester, str_subject,
                  convert.toFloat(str_credit_hours), str_components,
@@ -462,7 +457,23 @@ set<string> getGradePerStudent(set<string> subject_grades, set<string> students,
   4. Store or print the GPA for each student.
 */
 
+void writeGPAinFile(string filename, set<string> students_marks) {
+  ofstream wf(filename, std::ios::app); // append mode
 
+  for (const auto &entry : students_marks) {
+
+    istringstream iss(entry);
+
+    string str_sap, str_name, str_gpa;
+
+    getline(iss, str_sap, ',');
+    getline(iss, str_name, ',');
+    getline(iss, str_gpa);
+
+    wf << "Name: " << str_name << "\nSAP ID: " << str_sap
+       << "\nGPA: " << str_gpa << endl;
+  }
+}
 
 int main() {
   string components[5] = {"assignment", "quiz", "labs", "midterm",
@@ -551,12 +562,13 @@ int main() {
 
   // ... GOOD UP UNTIL THIS POINT
 
+  // this returns sap, name, gpa
   set<string> students_marks = getGradePerStudent(
       subject_grades, students, subject_credits, total_credit_hours, convert);
 
   printSet(students_marks);
 
-
+  writeGPAinFile("data/gpa.txt", students_marks);
 
   return 0;
 }
